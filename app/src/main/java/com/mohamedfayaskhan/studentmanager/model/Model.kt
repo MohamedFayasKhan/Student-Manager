@@ -61,5 +61,5 @@ data class StudentPresent(
 
 data class SubjectMarks(
     val subject: String,
-    val marks: String
+    val marks: String,
 )

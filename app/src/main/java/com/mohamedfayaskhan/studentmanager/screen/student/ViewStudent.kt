@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -48,14 +49,10 @@ fun ViewStudent(
     val students = studentImpl.read()
     val selectedStudent = students.filter { it.id == studentId }[0]
     val assessmentImpl = AssessmentImpl(dataViewModel, context) as Actions<Assessment>
-//    if (assessmentImpl.read().isEmpty()) {
-        assessmentImpl.refresh(studentId)
-//    }
+    assessmentImpl.refresh(studentId)
     val assessments = assessmentImpl.read()
     val assignmentImpl = AssignmentImpl(dataViewModel, context) as Actions<Assignment>
-//    if (assignmentImpl.read().isEmpty()) {
-        assignmentImpl.refresh(studentId)
-//    }
+    assignmentImpl.refresh(studentId)
     val assignments = assignmentImpl.read()
     val subjectImpl = SubjectImpl(dataViewModel, context) as Actions<Subject>
     if (subjectImpl.read().isEmpty()) {
@@ -73,11 +70,21 @@ fun ViewStudent(
         modifier = Modifier.fillMaxSize()
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Name: ${selectedStudent.name}", fontWeight = FontWeight.Bold)
-            Text(text = "Grade: ${selectedStudent.grade}", fontWeight = FontWeight.Bold)
+            Text(
+                text = "Name: ${selectedStudent.name}",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Grade: ${selectedStudent.grade}",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
         }
         TabRow(selectedTabIndex = selectedTabIndex) {
             tabItems.forEachIndexed { index, router ->

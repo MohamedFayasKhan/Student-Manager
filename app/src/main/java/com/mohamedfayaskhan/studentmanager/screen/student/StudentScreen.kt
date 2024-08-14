@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
@@ -56,6 +59,15 @@ fun StudentScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        item {
+            Text(
+                text = "Students",
+                modifier = Modifier.padding(16.dp),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         items(students) { student ->
             Row(
                 modifier = Modifier
@@ -71,8 +83,16 @@ fun StudentScreen(
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = student.name.toString(), modifier = Modifier.padding(16.dp))
-                Text(text = student.grade.toString(), modifier = Modifier.padding(16.dp))
+                Text(
+                    text = student.name.toString(),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = student.grade.toString(),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
             Divider()
         }
@@ -103,13 +123,14 @@ private fun ShowEditDialogStudent(
                 .padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Edit Student",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -120,6 +141,7 @@ private fun ShowEditDialogStudent(
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Delete Student",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -153,26 +175,37 @@ private fun ShowDeleteDialogStudent(
                 .padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Are you want to delete the Student ${selectedStudent.value.name}?",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(10.dp)
                 )
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(text = "No", modifier = Modifier
+                    Text(
+                        text = "No",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
                         .weight(1f)
+                        .padding(10.dp)
                         .clickable { onDismiss() })
-                    Text(text = "Yes", modifier = Modifier
+                    Text(
+                        text = "Yes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
                         .weight(1f)
+                        .padding(10.dp)
                         .clickable {
                             dataViewModel.deleteStudent(selectedStudent.value.id.toString()) {
                                 onDismiss()

@@ -33,6 +33,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.mohamedfayaskhan.studentmanager.actions.Actions
 import com.mohamedfayaskhan.studentmanager.constant.Constant
@@ -99,7 +99,7 @@ fun AssessmentScreen(
                     ) {
                         Text(
                             text = assessment.title.toString(),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier
                                 .align(Alignment.TopStart)
                                 .padding(8.dp)
@@ -138,7 +138,7 @@ fun AssessmentScreen(
                         ) {
                             Text(
                                 text = assessment.description.toString(),
-                                fontSize = 16.sp,
+                                style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(0.75f)
@@ -156,7 +156,7 @@ fun AssessmentScreen(
                                         "%.2f",
                                         assessment.scoredMark
                                     ),
-                                    fontSize = 16.sp
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                                 Divider(modifier = Modifier.width(50.dp), thickness = 2.dp)
                                 Text(
@@ -165,20 +165,20 @@ fun AssessmentScreen(
                                         "%.2f",
                                         assessment.totalMark
                                     ),
-                                    fontSize = 16.sp
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
                             }
                         }
                         Text(
                             text = assessment.date.toString(),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
                                 .padding(8.dp)
                         )
                         Text(
                             text = assessment.subject?.name.toString(),
-                            fontSize = 16.sp,
+                            style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
                                 .padding(8.dp)
@@ -492,6 +492,7 @@ private fun ShowDeleteDialogAssessment(
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Are you want to delete the assessment ${assessment.title}?",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
@@ -500,10 +501,16 @@ private fun ShowDeleteDialogAssessment(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(text = "No", modifier = Modifier
+                    Text(
+                        text = "No",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
                         .weight(1f)
                         .clickable { onDismiss() })
-                    Text(text = "Yes", modifier = Modifier
+                    Text(
+                        text = "Yes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
                         .weight(1f)
                         .clickable {
                             assessmentImpl.delete(assessment.id!!)

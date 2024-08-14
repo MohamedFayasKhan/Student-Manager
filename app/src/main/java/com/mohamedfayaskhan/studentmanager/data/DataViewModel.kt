@@ -39,8 +39,8 @@ class DataViewModel: ViewModel() {
 //    val totalAssessments: SnapshotStateList<Assessment> = _totalAssessments
     private var _totalAssignments = mutableStateListOf<Assignment>()
 //    val totalAssignments: SnapshotStateList<Assignment> = _totalAssignments
-    private var _stats = mutableStateListOf<Pair<Student, List<SubjectMarks>>>()
-    val stats: SnapshotStateList<Pair<Student, List<SubjectMarks>>> = _stats
+    private var _stats = mutableStateListOf<Triple<Student, List<SubjectMarks>, String>>()
+    val stats: SnapshotStateList<Triple<Student, List<SubjectMarks>, String>> = _stats
 
     fun upsertStudent(student: Student, isComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
@@ -65,6 +65,7 @@ class DataViewModel: ViewModel() {
                     _students.clear()
                     _students.addAll(list.distinctBy { it.id })
                     getSubject()
+                    getAttendance()
                     if (_students.isNotEmpty()) {
                         viewModelScope.launch {
                             delay(2000)
@@ -254,6 +255,12 @@ class DataViewModel: ViewModel() {
         _stats.clear()
         _students.forEach {student ->
             val list = mutableListOf<SubjectMarks>()
+            var presentCount = 0
+            _attendances.forEach { attendance ->
+                if (attendance.presents?.contains(student.id) == true) {
+                    presentCount += 1
+                }
+            }
             _subjects.forEach {subject ->
                 val assessments = _totalAssessments.filter { it.studentId == student.id }
                 var scored = 0.0
@@ -264,7 +271,7 @@ class DataViewModel: ViewModel() {
                 }
                 list.add(SubjectMarks(subject.name.toString(), String.format(Locale.getDefault(), "%.2f", ((scored / total) * 100))))
             }
-            _stats.add(Pair(student, list))
+            _stats.add(Triple(student, list, "$presentCount / ${_attendances.size}"))
         }
     }
 }
