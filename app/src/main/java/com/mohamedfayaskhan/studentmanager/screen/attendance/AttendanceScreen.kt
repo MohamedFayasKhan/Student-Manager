@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
@@ -42,12 +45,14 @@ fun AttendanceScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
-    val attendanceImpl = AttendanceImpl(dataViewModel = dataViewModel, context = context) as Actions<Attendance>
+    val attendanceImpl =
+        AttendanceImpl(dataViewModel = dataViewModel, context = context) as Actions<Attendance>
     if (attendanceImpl.read().isEmpty()) {
         attendanceImpl.refresh(null)
     }
     val attendances = attendanceImpl.read()
-    val studentImpl = StudentImpl(dataViewModel = dataViewModel, context = context) as Actions<Student>
+    val studentImpl =
+        StudentImpl(dataViewModel = dataViewModel, context = context) as Actions<Student>
     if (studentImpl.read().isEmpty()) {
         studentImpl.refresh(null)
     }
@@ -62,7 +67,16 @@ fun AttendanceScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        items(attendances) {attendance ->
+        item {
+            Text(
+                text = "Attendance",
+                modifier = Modifier.padding(16.dp),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        items(attendances) { attendance ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,8 +91,16 @@ fun AttendanceScreen(
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = attendance.date.toString(), modifier = Modifier.padding(16.dp))
-                Text(text = "${attendance.presents?.size}/${students.size}", modifier = Modifier.padding(16.dp))
+                Text(
+                    text = attendance.date.toString(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+                Text(
+                    text = "${attendance.presents?.size}/${students.size}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
             }
             Divider()
         }
@@ -115,6 +137,7 @@ private fun ShowEditDialogAttendance(
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Edit Attendance",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -125,6 +148,7 @@ private fun ShowEditDialogAttendance(
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Delete Attendance",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
@@ -165,6 +189,7 @@ private fun ShowDeleteDialogAttendance(
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "Are you want to delete the Attendance on ${selectedAttendance.value.date}?",
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
@@ -173,16 +198,24 @@ private fun ShowDeleteDialogAttendance(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(text = "No", modifier = Modifier
-                        .weight(1f)
-                        .clickable { onDismiss1() })
-                    Text(text = "Yes", modifier = Modifier
-                        .weight(1f)
-                        .clickable {
-                            dataViewModel.deleteAttendance(selectedAttendance.value.id.toString()) {
-                                onDismiss1()
+                    Text(
+                        text = "No",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable { onDismiss1() }
+                    )
+                    Text(
+                        text = "Yes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable {
+                                dataViewModel.deleteAttendance(selectedAttendance.value.id.toString()) {
+                                    onDismiss1()
+                                }
                             }
-                        })
+                    )
                 }
             }
         }

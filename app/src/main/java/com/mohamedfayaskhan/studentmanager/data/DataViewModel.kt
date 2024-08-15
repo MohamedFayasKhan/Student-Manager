@@ -254,15 +254,15 @@ class DataViewModel: ViewModel() {
     fun getStats() {
         _stats.clear()
         _students.forEach {student ->
-            val list = mutableListOf<SubjectMarks>()
             var presentCount = 0
             _attendances.forEach { attendance ->
                 if (attendance.presents?.contains(student.id) == true) {
                     presentCount += 1
                 }
             }
+            val list = mutableListOf<SubjectMarks>()
             _subjects.forEach {subject ->
-                val assessments = _totalAssessments.filter { it.studentId == student.id }
+                val assessments = _totalAssessments.filter { it.studentId == student.id && subject.id == it.subject?.id }
                 var scored = 0.0
                 var total = 0.0
                 assessments.forEach {assessment ->
